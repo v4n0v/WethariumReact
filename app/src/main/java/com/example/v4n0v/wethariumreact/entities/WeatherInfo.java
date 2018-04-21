@@ -11,7 +11,7 @@ public class WeatherInfo {
     }
 
     private Coord coord;
-
+    private int temp;
 
 //    private int tempMin;
 //    private int tempMax;
@@ -19,7 +19,7 @@ public class WeatherInfo {
 ////    private boolean isHumidity;
 ////    private boolean isWind;
 //
-    private int temp;
+
 //    private  int hum;
 //    private  int speed;
 //    private  int pressure;

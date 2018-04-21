@@ -11,9 +11,7 @@ public class WeatherRepo implements IWeatherRepo{
 
     @Override
     public Observable<WeatherInfo> getWeather(String city) {
-
-            return ApiHolder.getApi().getWeather(Resource.KEY, city, Resource.UNIT);
-
+        return ApiHolder.getApi().getWeather(Resource.KEY, city, Resource.UNIT);
     }
 
 
