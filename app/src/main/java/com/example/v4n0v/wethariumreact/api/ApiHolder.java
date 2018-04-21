@@ -1,6 +1,10 @@
 package com.example.v4n0v.wethariumreact.api;
 
 
+import com.example.v4n0v.wethariumreact.gson.Weather;
+import com.example.v4n0v.wethariumreact.gson.WeatherDeserializer;
+import com.example.v4n0v.wethariumreact.gson.WeatherMain;
+import com.example.v4n0v.wethariumreact.gson.WeatherMainDeserializer;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,7 +23,7 @@ import timber.log.Timber;
 public class ApiHolder {
 // http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&appid=1aa546d01134ed09d869b84c7e83e34f
 //    private static final String OPEN_API_MAP = "http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&appid=1aa546d01134ed09d869b84c7e83e34f/";
-    private static final String OPEN_API_MAP = "http://api.openweathermap.org/data/2.5/weather/";
+    private static final String OPEN_API_MAP = "http://api.openweathermap.org/data/2.5/";
 
     private static ApiHolder instance = new ApiHolder();
 
@@ -38,9 +42,14 @@ public class ApiHolder {
     private ApiService api;
 
     private ApiHolder() {
+//
+//        Gson gson = new GsonBuilder()
+//                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+//                .create();
 
         Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .registerTypeAdapter(Weather.class, new WeatherDeserializer())
+                .registerTypeAdapter(WeatherMain.class, new WeatherMainDeserializer())
                 .create();
 
 
@@ -53,9 +62,9 @@ public class ApiHolder {
 
         api = new Retrofit.Builder()
                 .baseUrl(OPEN_API_MAP)
+                .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient)
                 .build()
                 .create(ApiService.class);
 
