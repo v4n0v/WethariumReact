@@ -10,17 +10,18 @@ import timber.log.Timber;
  */
 
 public class App extends Application {
-    static App app;
+    private static App instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        app = this;
+        instance = this;
         Timber.plant(new Timber.DebugTree());
         Paper.init(this);
     }
 
-    public static App getInstance() {
-        return app;
+    public static App getInstance()
+    {
+        return instance;
     }
 }

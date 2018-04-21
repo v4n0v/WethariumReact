@@ -24,7 +24,7 @@ public class NetworkStatus {
     }
 
 //    public static Status getStatus() {
-//        ConnectivityManager cm = (ConnectivityManager) App.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+//        ConnectivityManager cm = (ConnectivityManager) App.getConnection().getSystemService(Context.CONNECTIVITY_SERVICE);
 //        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 //        if (null != activeNetwork) {
 //            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {

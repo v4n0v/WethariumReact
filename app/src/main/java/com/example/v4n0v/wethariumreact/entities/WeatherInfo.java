@@ -2,10 +2,10 @@ package com.example.v4n0v.wethariumreact.entities;
 
 
 public class WeatherInfo {
+
     public Coord getCoord() {
         return coord;
     }
-
     public void setCoord(Coord coord) {
         this.coord = coord;
     }

@@ -1,6 +1,8 @@
 package com.example.v4n0v.wethariumreact.api;
 
 
+import android.util.Log;
+
 import com.example.v4n0v.wethariumreact.gson.Weather;
 import com.example.v4n0v.wethariumreact.gson.WeatherDeserializer;
 import com.example.v4n0v.wethariumreact.gson.WeatherMain;
@@ -15,13 +17,14 @@ import okhttp3.Credentials;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
 public class ApiHolder {
-// http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&appid=1aa546d01134ed09d869b84c7e83e34f
+    // http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&appid=1aa546d01134ed09d869b84c7e83e34f
 //    private static final String OPEN_API_MAP = "http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&appid=1aa546d01134ed09d869b84c7e83e34f/";
     private static final String OPEN_API_MAP = "http://api.openweathermap.org/data/2.5/";
 
@@ -52,17 +55,23 @@ public class ApiHolder {
                 .registerTypeAdapter(WeatherMain.class, new WeatherMainDeserializer())
                 .create();
 
-
-        OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(chain -> {
-            Request originalRequest = chain.request();
-            Timber.d(originalRequest.body().toString());
-            return chain.proceed(originalRequest);
-        }).build();
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+// add your other interceptors …
+// add logging as last interceptor
+        httpClient.addInterceptor(logging);
+//        OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(chain -> {
+//            Request originalRequest = chain.request();
+//            Log.d("ApiHolder", originalRequest.body().toString());
+//
+//            return chain.proceed(originalRequest);
+//        }).build();
 
 
         api = new Retrofit.Builder()
                 .baseUrl(OPEN_API_MAP)
-                .client(okHttpClient)
+                .client(httpClient.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
