@@ -1,4 +1,4 @@
-package com.example.v4n0v.wethariumreact.views;
+package com.example.v4n0v.wethariumreact.mvp.views;
 
 import com.arellomobile.mvp.MvpView;
 

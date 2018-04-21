@@ -1,10 +1,10 @@
-package com.example.v4n0v.wethariumreact.presenter;
+package com.example.v4n0v.wethariumreact.mvp.presenter;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.v4n0v.wethariumreact.entities.WeatherInfo;
-import com.example.v4n0v.wethariumreact.repos.WeatherRepo;
-import com.example.v4n0v.wethariumreact.views.WeatherView;
+import com.example.v4n0v.wethariumreact.mvp.repos.WeatherRepo;
+import com.example.v4n0v.wethariumreact.mvp.views.WeatherView;
 
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;

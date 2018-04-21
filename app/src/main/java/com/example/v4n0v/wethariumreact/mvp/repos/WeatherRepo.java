@@ -1,4 +1,4 @@
-package com.example.v4n0v.wethariumreact.repos;
+package com.example.v4n0v.wethariumreact.mvp.repos;
 
 import com.example.v4n0v.wethariumreact.api.ApiHolder;
 import com.example.v4n0v.wethariumreact.common.Resource;

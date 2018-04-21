@@ -18,8 +18,8 @@ import timber.log.Timber;
 
 public class ApiHolder {
 // http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&appid=1aa546d01134ed09d869b84c7e83e34f
-    private static final String OPEN_API_MAP = "http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&appid=1aa546d01134ed09d869b84c7e83e34f/";
-//    private static final String OPEN_API_MAP = "http://api.openweathermap.org/data/2.5/weather/";
+//    private static final String OPEN_API_MAP = "http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&appid=1aa546d01134ed09d869b84c7e83e34f/";
+    private static final String OPEN_API_MAP = "http://api.openweathermap.org/data/2.5/weather/";
 
     private static ApiHolder instance = new ApiHolder();
 
