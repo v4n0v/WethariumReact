@@ -10,12 +10,12 @@ import com.example.v4n0v.wethariumreact.gson.WeatherMain;
 import com.example.v4n0v.wethariumreact.gson.WeatherMainDeserializer;
 import com.example.v4n0v.wethariumreact.mvp.repos.WeatherRepo;
 import com.example.v4n0v.wethariumreact.mvp.views.WeatherView;
-import com.example.v4n0v.wethariumreact.okApi.ConnectionManager;
+import com.example.v4n0v.wethariumreact.okApi.ConnectionHolder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -26,16 +26,13 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
     private Scheduler scheduler;
     Weather weatherInfo;
     String TAG = "WeatherPresenter";
+    ConnectionHolder connectionManager;
 
-
-    Gson gson = new GsonBuilder()
-            .registerTypeAdapter(Weather.class, new WeatherDeserializer())
-            .registerTypeAdapter(WeatherMain.class, new WeatherMainDeserializer())
-            .create();
 
     public WeatherPresenter(Scheduler scheduler) {
 
         this.scheduler = scheduler;
+        connectionManager = new ConnectionHolder();
     }
 
     public void init() {
@@ -52,21 +49,18 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
 
         // через OkHttpClient все получается и сериализуется, но это "не спортивно"
 
-        getWeatherFromOk();
+        getWeatherFromOk("Moscow");
     }
 
 
-    public void getWeatherFromOk() {
+    public void getWeatherFromOk(String city) {
 
-        Single<String> single = ConnectionManager.getConnection().getWeather("Moscow");
+        Observable<Weather> single = connectionManager.getWeather(city);
                 single.subscribeOn(Schedulers.io())
                 .observeOn(scheduler)
                 .subscribe(s -> {
-                    weatherInfo = gson.fromJson(s, Weather.class);
+                    weatherInfo = s;
                     //todo timber отказывается писать в лог
-                    Timber.d(s);
-
-                    Log.d(TAG, s);
                     Log.d(TAG, weatherInfo.getCity() + ", temp = " + weatherInfo.getTemperature());
                 });
 
