@@ -1,27 +1,18 @@
 package com.example.v4n0v.wethariumreact.api;
 
 
-import android.util.Log;
-
-import com.example.v4n0v.wethariumreact.gson.Weather;
-import com.example.v4n0v.wethariumreact.gson.WeatherDeserializer;
-import com.example.v4n0v.wethariumreact.gson.WeatherMain;
-import com.example.v4n0v.wethariumreact.gson.WeatherMainDeserializer;
-import com.google.gson.FieldNamingPolicy;
+import com.example.v4n0v.wethariumreact.entities.gson.Weather;
+import com.example.v4n0v.wethariumreact.entities.gson.WeatherDeserializer;
+import com.example.v4n0v.wethariumreact.entities.gson.WeatherMain;
+import com.example.v4n0v.wethariumreact.entities.gson.WeatherMainDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-
-import okhttp3.Credentials;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import timber.log.Timber;
 
 public class ApiHolder {
     // http://api.openweathermap.org/data/2.5/weather?q=Moscow&units=metric&appid=1aa546d01134ed09d869b84c7e83e34f

@@ -1,70 +1,52 @@
 package com.example.v4n0v.wethariumreact.mvp.presenter;
 
-import android.util.Log;
+import android.content.Context;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-import com.example.v4n0v.wethariumreact.gson.Weather;
-import com.example.v4n0v.wethariumreact.gson.WeatherDeserializer;
-import com.example.v4n0v.wethariumreact.gson.WeatherMain;
-import com.example.v4n0v.wethariumreact.gson.WeatherMainDeserializer;
-import com.example.v4n0v.wethariumreact.mvp.repos.WeatherRepo;
+import com.example.v4n0v.wethariumreact.common.WeatherBroadcastBus;
+import com.example.v4n0v.wethariumreact.entities.gson.Weather;
+import com.example.v4n0v.wethariumreact.common.WeatherDecorator;
 import com.example.v4n0v.wethariumreact.mvp.views.WeatherView;
-import com.example.v4n0v.wethariumreact.okApi.ConnectionHolder;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.squareup.otto.Subscribe;
 
-import io.reactivex.Observable;
+import io.paperdb.Paper;
 import io.reactivex.Scheduler;
-import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 
 @InjectViewState
 public class WeatherPresenter extends MvpPresenter<WeatherView> {
-    WeatherRepo weatherRepo;
-    private Scheduler scheduler;
-    Weather weatherInfo;
-    String TAG = "WeatherPresenter";
-    ConnectionHolder connectionManager;
-
-
-    public WeatherPresenter(Scheduler scheduler) {
-
+    Scheduler scheduler;
+    WeatherDecorator model;
+    public WeatherPresenter(Scheduler scheduler, Context context) {
         this.scheduler = scheduler;
-        connectionManager = new ConnectionHolder();
+        this.model=new WeatherDecorator(context);
+        WeatherBroadcastBus.getBus().register(this);
     }
 
-    public void init() {
-        Log.d(TAG, "Init WeatherPresenter");
-        Timber.d("Init WeatherPresenter");
-        // через ретрофит
-//        weatherRepo.getWeather("Moscow")
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(scheduler)
-//                .subscribe(weather -> {
-//                    //  weatherInfo=weather;
-//                    Timber.d("weather ");
-//                });
+    public void init(){
+        Weather weather = Paper.book("weather").read("weather", null);
+        if (weather!=null){
+           applyData(weather);
+        }
+    }
 
-        // через OkHttpClient все получается и сериализуется, но это "не спортивно"
+   private void  applyData(Weather weather){
+       getViewState().applyData(weather);
+       getViewState().showIcon(model.getWeatherIcon(weather.getId()));
+       getViewState().showDescription(model.getWeatherDescription(weather.getId()));
+       getViewState().showTemperature(model.temperatureFormat(weather.getTemperature()));
+       getViewState().showLastUpdate(model.getLastUpdate(weather.getTime()));
+       getViewState().showTemperatureBetween(model.getTemperatureBetween(weather.getTempMin(), weather.getTempMax()));
+    }
 
-        getWeatherFromOk("Moscow");
+    @Subscribe
+    public void onRecieve(Weather weather){
+        applyData(weather);
     }
 
 
-    public void getWeatherFromOk(String city) {
-
-        Observable<Weather> single = connectionManager.getWeather(city);
-                single.subscribeOn(Schedulers.io())
-                .observeOn(scheduler)
-                .subscribe(s -> {
-                    weatherInfo = s;
-                    //todo timber отказывается писать в лог
-                    Log.d(TAG, weatherInfo.getCity() + ", temp = " + weatherInfo.getTemperature());
-                });
 
 
-    }
 
 }

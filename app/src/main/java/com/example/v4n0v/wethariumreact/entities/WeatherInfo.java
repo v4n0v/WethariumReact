@@ -3,6 +3,10 @@ package com.example.v4n0v.wethariumreact.entities;
 
 public class WeatherInfo {
 
+    public WeatherInfo(Coord coord) {
+        this.coord = coord;
+    }
+
     public Coord getCoord() {
         return coord;
     }
@@ -156,6 +160,11 @@ public class WeatherInfo {
 
         public void setLat(float lat) {
             this.lat = lat;
+        }
+
+        @Override
+        public String toString() {
+            return "lon = "+lon+", lat = "+lat;
         }
     }
 

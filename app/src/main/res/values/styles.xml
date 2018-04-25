@@ -9,6 +9,7 @@
     </style>
 
     <style name="AppTheme.NoActionBar">
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -16,5 +17,29 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="TextShadow">
+        <item name="android:shadowColor">@color/colorGray</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+    </style>
+
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+    <style name="NavigationDrawerStyle" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorGray</item>
+
+        <item name="android:listPreferredItemHeightSmall">50dp</item>
+        <item name="listPreferredItemHeightSmall">50dp</item>
+
+    </style>
+
+    <!--   <item name="android:textColor">@color/colorPrimary</item>  __________________________________________________-->
 
 </resources>
