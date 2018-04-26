@@ -12,27 +12,30 @@ public class RealmImageCache implements ICacheImage {
     @Override
     public void writeToCache(File file, String city) {
         Realm realm = Realm.getDefaultInstance();
-        RealmImage realmImage = realm.where(RealmImage.class).equalTo("url", city).findFirst();
+        RealmImage realmImage = realm.where(RealmImage.class).equalTo("city", city).findFirst();
         if (realmImage != null) {
-            realm.executeTransaction(realm1 -> {
-                realmImage.setPath(file.getAbsolutePath());
-            });
+            realm.executeTransaction(realm1 ->
+                    realmImage.setPath(file.getAbsolutePath())
+            );
         } else {
             realm.executeTransaction(realm1 -> {
                 RealmImage newRealmImage = realm.createObject(RealmImage.class, city);
                 newRealmImage.setPath(file.getAbsolutePath());
             });
         }
-        Timber.d("realm saved image: "+file);
+        Timber.d("realm saved image: " + file);
     }
 
     @Override
-    public File readFromCache(String url) {
+    public File readFromCache(String city) {
         Realm realm = Realm.getDefaultInstance();
-        RealmImage realmImage = realm.where(RealmImage.class).equalTo("url", url).findFirst();
-        File file = new File(realmImage.getPath());
-        Timber.d("realm saved image: "+file);
-        return file;
+        RealmImage realmImage = realm.where(RealmImage.class).equalTo("city", city).findFirst();
+        if (realmImage != null) {
+            File file = new File(realmImage.getPath());
+            Timber.d("realm saved image: " + file);
+            return file;
+        }
+        return null;
     }
 
 

@@ -37,7 +37,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     // подписываюсь на рассылку сообщений при получении погодыд от сервиса
     public MainPresenter(Scheduler scheduler) {
-        WeatherBroadcastBus.getBus().register(this);
+
         this.scheduler = scheduler;
 
     }
@@ -99,5 +99,17 @@ public class MainPresenter extends MvpPresenter<MainView> {
     public void selectCity() {
         String city = Paper.book("city").read("city");
         getViewState().selectCityDialog(city);
+    }
+
+    public void subscribeBus(){
+        WeatherBroadcastBus.getBus().register(this);
+    }
+    public void unsubscribeBus(){
+        WeatherBroadcastBus.getBus().unregister(this);
+    }
+
+    public void reloadPhoto() {
+        //weather = Paper.book("weather").read("weather", null);
+        getViewState().reloadCityPhoto(weather.getCity());
     }
 }

@@ -14,12 +14,16 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.v4n0v.wethariumreact.R;
+import com.example.v4n0v.wethariumreact.common.WeatherBroadcastBus;
+import com.example.v4n0v.wethariumreact.entities.gson.Weather;
 import com.example.v4n0v.wethariumreact.mvp.presenter.WeatherHistoryPresenter;
 import com.example.v4n0v.wethariumreact.mvp.views.WeatherHistoryView;
 import com.example.v4n0v.wethariumreact.recycler_adapters.RecyclerWeatherHistoryAdapter;
+import com.squareup.otto.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 
@@ -36,8 +40,8 @@ public class WeatherHistoryActivity extends MvpAppCompatActivity implements Weat
 
     @BindView(R.id.recycler)
     RecyclerView recyclerView;
-
-
+@BindView(R.id.history_toolbar)
+Toolbar toolbar;
     RecyclerWeatherHistoryAdapter adapter;
 
     @Override
@@ -47,15 +51,27 @@ public class WeatherHistoryActivity extends MvpAppCompatActivity implements Weat
         ButterKnife.bind(this);
         init();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.history_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        WeatherBroadcastBus.getBus().unregister(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WeatherBroadcastBus.getBus().register(this);
+    }
+
+
+    @Subscribe
+    public void onRecieve(Weather weather){
+        Paper.book("weather").write("weather", weather);
+        startActivity();
     }
 
     void init() {

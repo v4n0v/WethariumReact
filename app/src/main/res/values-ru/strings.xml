@@ -43,10 +43,10 @@
         <item>Дождь</item>
         <item>Снег</item>
         <item>Туман</item>
-        <item>Облака</item>
+        <item>Облачно</item>
     </string-array>
 
-
+    <string name="photo_upd">Загрузка фото</string>
     <string name="city_default">Москва</string>
     <string name="clear">Ясно</string>
     <string name="appwidget_text">EXAMPLE</string>

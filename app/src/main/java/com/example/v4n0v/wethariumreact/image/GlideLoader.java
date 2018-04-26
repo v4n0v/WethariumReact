@@ -42,17 +42,81 @@ public class GlideLoader implements IImageLoader<ImageView> {
         this.cacheImage = cacheImage;
         this.linkLoader = linkLoader;
     }
-    String link;
+
+    private String link;
+
     @Override
     public void loadInto(String city, ImageView container) {
+        File file = cacheImage.readFromCache(city);
+        if (file != null) {
+            Timber.d("loading avatar from phone memory\n" + file.getAbsolutePath());
+            Glide.with(container.getContext())
+                    .load(file)
+                    .into(container);
+            Timber.d("avatar loaded from phone memory ");
+        } else {
+            downloadPhoto(city, container);
+        }
 
+
+//
+//        if (NetworkStatus.isOnline()) {
+//            linkLoader.getPhotoLinks(city)
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribeOn(Schedulers.io())
+//                    .subscribe(link -> {
+//                                Timber.d("I've got " + link + " link");
+//                                this.link = link;
+//
+//
+//                        GlideApp.with(container.getContext()).asBitmap().load(link).listener(new RequestListener<Bitmap>() {
+//                            @Override
+//                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+//                                Timber.e("failed to load image", e);
+//                                return false;
+//                            }
+//
+//                            @Override
+//                            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+//                                //
+//                                Timber.d("saving city image into phone memory " + link);
+//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                resource.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+//                                File file = new File(container.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), city + ".jpg");
+//                                try {
+//                                    stream.writeTo(new FileOutputStream(file));
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                cacheImage.writeToCache(file, city);
+//                                Timber.d("city image saved in phone memory, path added to realm database");
+//                                return false;
+//                            }
+//                        }).into(container);
+//                    });
+//
+//        } else {
+//            File file = cacheImage.readFromCache(city);
+//            if (file != null) {
+//                Timber.d("loading avatar from phone memory\n" + file.getAbsolutePath());
+//                Glide.with(container.getContext())
+//                        .load(file)
+//                        .into(container);
+//                Timber.d("avatar loaded from phone memory ");
+//            }
+//
+//        }
+    }
+
+    @Override
+    public void downloadPhoto(String city, ImageView container) {
         if (NetworkStatus.isOnline()) {
             linkLoader.getPhotoLinks(city)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io())
                     .subscribe(link -> {
-                                Timber.d("I've got " + link + " link");
-                                this.link = link;
+                        Timber.d("I've got " + link + " link");
+                        this.link = link;
 
 
                         GlideApp.with(container.getContext()).asBitmap().load(link).listener(new RequestListener<Bitmap>() {
@@ -75,25 +139,14 @@ public class GlideLoader implements IImageLoader<ImageView> {
                                     e.printStackTrace();
                                 }
                                 cacheImage.writeToCache(file, city);
-                                Timber.d("city image saved in phone memory, path added to realm database");
+                                Timber.d(city+ " city image saved in phone memory, path added to realm database");
                                 return false;
                             }
                         }).into(container);
                     });
-
-        } else {
-            File file = cacheImage.readFromCache(city);
-            if (file != null) {
-                Timber.d("loading avatar from phone memory\n" + file.getAbsolutePath());
-                Glide.with(container.getContext())
-                        .load(file)
-                        .into(container);
-                Timber.d("avatar loaded from phone memory ");
-            }
-
+//
         }
     }
-
 
     public static String MD5(String s) {
         MessageDigest m = null;

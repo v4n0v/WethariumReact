@@ -64,9 +64,7 @@ public class WeatherHistoryPresenter extends MvpPresenter<WeatherHistoryView> {
         model.clearList()
                 .observeOn(scheduler)
                 .subscribeOn(Schedulers.io())
-                .subscribe(boo->{
-                    getViewState().startActivity();
-                });
+                .subscribe(boo-> getViewState().startActivity());
     }
 
 
@@ -75,6 +73,8 @@ public class WeatherHistoryPresenter extends MvpPresenter<WeatherHistoryView> {
         WeatherBroadcastBus.getBus().register(this);
         model = new WeatherHistoryModel(scheduler);
     }
+
+
 
     public void init() {
 

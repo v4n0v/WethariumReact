@@ -6,17 +6,17 @@ import io.realm.annotations.PrimaryKey;
 
 public class RealmImage extends RealmObject {
     @PrimaryKey
-    private String url;
+    private String city;
     private String path;
 
 
 
-    public String getUrl() {
-        return url;
+    public String getCity() {
+        return city;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getPath() {

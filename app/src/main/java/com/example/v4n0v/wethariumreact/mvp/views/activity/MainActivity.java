@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -30,11 +31,14 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.example.v4n0v.wethariumreact.App;
 import com.example.v4n0v.wethariumreact.R;
+import com.example.v4n0v.wethariumreact.common.WeatherBroadcastBus;
+import com.example.v4n0v.wethariumreact.entities.gson.Weather;
 import com.example.v4n0v.wethariumreact.image.IImageLoader;
 import com.example.v4n0v.wethariumreact.mvp.presenter.MainPresenter;
 import com.example.v4n0v.wethariumreact.mvp.views.MainView;
 import com.example.v4n0v.wethariumreact.mvp.views.fragment.WeatherFragment;
 import com.example.v4n0v.wethariumreact.service.WeatherService;
+import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
 
@@ -89,9 +93,6 @@ public class MainActivity extends MvpAppCompatActivity
         App.getInstance().getAppComponent().inject(this);
         App.getInstance().getAppComponent().inject(presenter);
 
-
-
-
         appTextView.animate().alpha(0).setDuration(2000);
 
         presenter.init();
@@ -110,9 +111,22 @@ public class MainActivity extends MvpAppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        WeatherBroadcastBus.getBus().unregister(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WeatherBroadcastBus.getBus().register(this);
+    }
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -151,7 +165,7 @@ public class MainActivity extends MvpAppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -165,7 +179,7 @@ public class MainActivity extends MvpAppCompatActivity
         } else if (id == R.id.nav_share) {
 
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer =   findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -209,9 +223,9 @@ public class MainActivity extends MvpAppCompatActivity
         showCityTitleText(city);
         toolbarLayout.setTitle(city);
         //cityTextView.setText(city);
-       // toolbarLayout.animate().alpha(100).setDuration(2000);
+        // toolbarLayout.animate().alpha(100).setDuration(2000);
         imageLoader.loadInto(city, cityImage);
-        if (cityImage.getAlpha()==0){
+        if (cityImage.getAlpha() == 0) {
             cityImage.animate().alpha(100).setDuration(2000);
         }
     }
@@ -220,39 +234,47 @@ public class MainActivity extends MvpAppCompatActivity
     public void selectCityDialog(String city) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 //        builder.setTitle(getString(R.string.select_city));
-        builder.setTitle("Выбирите город");
+        builder.setTitle(getResources().getString(R.string.select_city));
         final EditText input = new EditText(this);
         //input.setTypeface(Preferences.fontOswaldLight(MainActivity.this.getAssets()));
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setHint(city);
         builder.setView(input);
-        builder.setPositiveButton("Show me the weather", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                presenter.changeCity(input.getText().toString());
-
-                //   fillFragment(weatherInfoFragment);
-
-            }
-        });
+        builder.setPositiveButton(getResources().getString(R.string.show_weather),
+                (dialog, which) -> presenter.changeCity(input.getText().toString())
+        );
         builder.show();
     }
 
-    void showAppText(){
+    void showAppText() {
         appTextView.setVisibility(View.VISIBLE);
         cityTextView.setVisibility(View.INVISIBLE);
 
     }
 
-    void showCityTitleText(String city){
-       // appTextView.setVisibility(View.INVISIBLE);
+    void showCityTitleText(String city) {
+        // appTextView.setVisibility(View.INVISIBLE);
 
         cityTextView.setVisibility(View.INVISIBLE);
     }
 
 
     public void reloadPicture(View view) {
+      presenter.reloadPhoto();
 
-        presenter.update();
+      //  presenter.update();
+    }
+
+    @Override
+    public void reloadCityPhoto(String city){
+        imageLoader.downloadPhoto(city, cityImage);
+        toast(getResources().getString(R.string.photo_upd));
+    }
+
+    @Subscribe
+    public void recievedMessage(Weather weather) {
+        loadCityImage(weather.getCity());
+        Timber.d("WeatherBroadcastBus message " + weather.getCity() + ", temp = " + weather.getTemperature());
+        toast(weather.getCity() + ", temp = " + weather.getTemperature());
     }
 }

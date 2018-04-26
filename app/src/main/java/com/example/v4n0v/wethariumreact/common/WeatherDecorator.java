@@ -65,6 +65,6 @@ private Context context;
 
     public String getLastUpdate(long time) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM' at ' HH:mm", Locale.getDefault());
-        return  "Updated: " + dateFormat.format(time);
+        return  context.getResources().getString(R.string.updated) + dateFormat.format(time);
     }
 }
