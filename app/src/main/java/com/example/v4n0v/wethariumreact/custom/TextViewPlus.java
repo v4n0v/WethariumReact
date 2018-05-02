@@ -8,9 +8,6 @@ import android.util.Log;
 
 import com.example.v4n0v.wethariumreact.R;
 
-/**
- * Created by v4n0v on 25.04.18.
- */
 public class TextViewPlus extends android.support.v7.widget.AppCompatTextView {
     private String TAG = "TextViewPlus";
     public TextViewPlus(Context context) {

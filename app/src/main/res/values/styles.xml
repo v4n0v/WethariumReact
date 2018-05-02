@@ -41,6 +41,11 @@
 
     </style>
 
+
+    <style name="CircularProgress" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/colorWhite</item>
+    </style>
+
     <!--   <item name="android:textColor">@color/colorPrimary</item>  __________________________________________________-->
 
 </resources>

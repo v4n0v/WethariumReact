@@ -34,5 +34,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="info_temp_font">90sp</dimen>
+    <dimen name="progress_size">25dp</dimen>
 
 </resources>
