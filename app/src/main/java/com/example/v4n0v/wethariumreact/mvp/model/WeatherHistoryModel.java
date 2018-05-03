@@ -24,12 +24,7 @@ public class WeatherHistoryModel {
     public WeatherHistoryModel(Scheduler scheduler) {
         this.scheduler = scheduler;
         App.getInstance().getAppComponent().inject(this);
-//        getWeathers()
-//                .observeOn(scheduler)
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(weathers -> {
-//                    this.weathers=weathers;
-//                });
+
     }
 
     public Observable<List<Weather>> getWeathers() {

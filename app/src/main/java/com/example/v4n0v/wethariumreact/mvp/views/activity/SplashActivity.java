@@ -94,18 +94,6 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             startActivity(intent, bundle);
         }
-//        connection.getPhotoLinks(weather.getCity())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(link->{
-//                    Timber.d("I've got "+link+" link");
-//                    imageLoader.loadInto(link, weather.getCity(), null);
-//
-//                });
-
-
-
-
 
     }
 }

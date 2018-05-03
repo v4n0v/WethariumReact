@@ -49,7 +49,7 @@ Toolbar toolbar;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_history);
         ButterKnife.bind(this);
-        init();
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -59,6 +59,7 @@ Toolbar toolbar;
     protected void onPause() {
         super.onPause();
         WeatherBroadcastBus.getBus().unregister(this);
+
     }
 
     @Override
@@ -74,14 +75,13 @@ Toolbar toolbar;
         startActivity();
     }
 
-    void init() {
-        presenter.init();
+    @Override
+    public void init() {
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new RecyclerWeatherHistoryAdapter(presenter.getListPresenter());
         recyclerView.setAdapter(adapter);
 
-//        PublishSubject<String> subject = PublishSubject.create();
-//        presenter.setSubject(subject);
 
     }
 

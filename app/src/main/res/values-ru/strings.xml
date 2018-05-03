@@ -20,7 +20,7 @@
     <string name="cels">\u00B0</string>
     <string name="speed">Ветер</string>
     <string name="apply">Готово</string>
-    <string name="show_weather">Показать координаты</string>
+    <string name="show_weather">Узнать погоду</string>
     <string name="clear_base">Очистить</string>
     <string name="updated">Обновлен: </string>
     <string name="reload_picture">Обновить картику</string>

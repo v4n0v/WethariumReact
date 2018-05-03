@@ -1,8 +1,7 @@
 package com.example.v4n0v.wethariumreact.api;
 
 
-import com.example.v4n0v.wethariumreact.entities.WeatherInfo;
-import com.example.v4n0v.wethariumreact.entities.gson.Weather;
+import com.example.v4n0v.wethariumreact.entities.pojo.WeatherInfo;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -14,6 +13,6 @@ public interface ApiService {
     @GET("/weather?units=metric")
     Observable<WeatherInfo> getWeather(@Query("q") String city,
                                        @Query("appid") String key);
-//    @GET()
-//    Observable<WeatherInfo> getWeather();
+    @GET()
+    Observable<WeatherInfo> getWeather();
 }

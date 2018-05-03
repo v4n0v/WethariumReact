@@ -91,7 +91,6 @@ public class WeatherService extends Service {
 
     @Subscribe
     public void onRecieve(String city) {
-
         changeCity(city);
     }
 

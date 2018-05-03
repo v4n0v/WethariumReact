@@ -92,23 +92,7 @@ public class MainActivity extends MvpAppCompatActivity
         ButterKnife.bind(this);
         App.getInstance().getAppComponent().inject(this);
         App.getInstance().getAppComponent().inject(presenter);
-
         appTextView.animate().alpha(0).setDuration(2000);
-
-        presenter.init();
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.container_frame, new WeatherFragment()).commit();
-
-        setSupportActionBar(toolbar);
-        fab.setOnClickListener(view -> selectCityDialog());
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
 
@@ -185,6 +169,22 @@ public class MainActivity extends MvpAppCompatActivity
     }
 
     @Override
+    public void init() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.container_frame, new WeatherFragment()).commit();
+
+        setSupportActionBar(toolbar);
+        fab.setOnClickListener(view -> selectCityDialog());
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
     public void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
@@ -200,7 +200,7 @@ public class MainActivity extends MvpAppCompatActivity
         sConn = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                //    Toast.makeText(getBaseContext(), "Splash service connected", Toast.LENGTH_SHORT).show();
+
                 Log.d(TAG, "Service connected");
                 WeatherService serviceWeather = ((WeatherService.WeatherBinder) service).getService();
                 serviceWeather.changeCity(city);
@@ -222,8 +222,7 @@ public class MainActivity extends MvpAppCompatActivity
     public void loadCityImage(String city) {
         showCityTitleText(city);
         toolbarLayout.setTitle(city);
-        //cityTextView.setText(city);
-        // toolbarLayout.animate().alpha(100).setDuration(2000);
+
         imageLoader.loadInto(city, cityImage);
         if (cityImage.getAlpha() == 0) {
             cityImage.animate().alpha(100).setDuration(2000);
@@ -233,10 +232,10 @@ public class MainActivity extends MvpAppCompatActivity
     @Override
     public void selectCityDialog(String city) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(getString(R.string.select_city));
+
         builder.setTitle(getResources().getString(R.string.select_city));
         final EditText input = new EditText(this);
-        //input.setTypeface(Preferences.fontOswaldLight(MainActivity.this.getAssets()));
+
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setHint(city);
         builder.setView(input);
@@ -246,15 +245,8 @@ public class MainActivity extends MvpAppCompatActivity
         builder.show();
     }
 
-    void showAppText() {
-        appTextView.setVisibility(View.VISIBLE);
-        cityTextView.setVisibility(View.INVISIBLE);
-
-    }
 
     void showCityTitleText(String city) {
-        // appTextView.setVisibility(View.INVISIBLE);
-
         cityTextView.setVisibility(View.INVISIBLE);
     }
 
@@ -262,7 +254,6 @@ public class MainActivity extends MvpAppCompatActivity
     public void reloadPicture(View view) {
       presenter.reloadPhoto();
 
-      //  presenter.update();
     }
 
     @Override

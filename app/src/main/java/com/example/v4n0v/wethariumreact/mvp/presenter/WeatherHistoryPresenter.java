@@ -29,6 +29,12 @@ public class WeatherHistoryPresenter extends MvpPresenter<WeatherHistoryView> {
     private PublishSubject<String> subject;
     Observer<String> observer;
 
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        getViewState().init();
+        init();
+    }
 
     public ListPresenter getListPresenter() {
         return listPresenter;
@@ -67,14 +73,11 @@ public class WeatherHistoryPresenter extends MvpPresenter<WeatherHistoryView> {
                 .subscribe(boo-> getViewState().startActivity());
     }
 
-
     public WeatherHistoryPresenter(Scheduler scheduler) {
         this.scheduler = scheduler;
-        WeatherBroadcastBus.getBus().register(this);
+
         model = new WeatherHistoryModel(scheduler);
     }
-
-
 
     public void init() {
 
@@ -89,11 +92,7 @@ public class WeatherHistoryPresenter extends MvpPresenter<WeatherHistoryView> {
 
     }
 
-    @Subscribe
-    public void onRecieve(Weather weather){
-        Paper.book("weather").write("weather", weather);
-        getViewState().startActivity();
-    }
+
 
 
 }
