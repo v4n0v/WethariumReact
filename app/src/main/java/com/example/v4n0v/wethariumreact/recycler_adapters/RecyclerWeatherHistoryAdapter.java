@@ -14,12 +14,15 @@ import com.example.v4n0v.wethariumreact.R;
 import com.example.v4n0v.wethariumreact.common.WeatherDecorator;
 import com.example.v4n0v.wethariumreact.entities.gson.Weather;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
 /**
- * Created by v4n0v on 25.04.18.
+ * RecyclerView адаптер для списка просмотренных городов
  */
 
 public class RecyclerWeatherHistoryAdapter  extends RecyclerView.Adapter<RecyclerWeatherHistoryAdapter.ViewHolder> {
@@ -83,19 +86,17 @@ public class RecyclerWeatherHistoryAdapter  extends RecyclerView.Adapter<Recycle
 
         @Override
         public void setWeather(Weather weather) {
-            String pressureInfo = weather.getPressure()+ root.getResources().getString(R.string.pressure_dim);
-            String windInfo = weather.getWind()+  root.getResources().getString(R.string.wind_dim);
-            String humInfo = weather.getHumidity()+ root.getResources().getString(R.string.humidity_dim);
 
             cityTV.setText(weather.getCity());
             tempTV.setText(weatherDecorator.temperatureFormat(weather.getTemperature()));//  getString(R.string.cels));
-            pressureTV.setText(pressureInfo);
-            humidityTV.setText(humInfo);
-            windTV.setText(windInfo);
-            timeTV.setText(weatherDecorator.getLastUpdate(weather.getTime()));
-            int weatherIcon = weatherDecorator.getWeatherIcon(weather.getId());
-            Drawable drawable = ResourcesCompat.getDrawable(root.getContext().getResources(), weatherIcon, null);
+            pressureTV.setText(String.valueOf(weather.getPressure()));
+            humidityTV.setText(String.valueOf(weather.getHumidity()));
+            windTV.setText(String.valueOf(weather.getWind()));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MMM: HH:mm", Locale.getDefault());
 
+            timeTV.setText(dateFormat.format(weather.getTime()));
+            int weatherIcon = getWeatherIcon(weather.getId());
+            Drawable drawable = ResourcesCompat.getDrawable(root.getContext().getResources(), weatherIcon, null);
             img.setImageDrawable(drawable);
         }
 
@@ -109,4 +110,31 @@ public class RecyclerWeatherHistoryAdapter  extends RecyclerView.Adapter<Recycle
             presenter.selectItem(pos);
         }
     }
+
+    public  int getWeatherIcon(int id) {
+        if (id == 800) return R.drawable.day_synny;
+        else {
+            id = id / 100;
+            switch (id) {
+                case 2:
+                    return R.drawable.day_thunder;
+                case 3:
+                    return R.drawable.day_drizzle;
+                case 5:
+                    return R.drawable.day_rainy;
+                case 6:
+                    return R.drawable.day_snowie;
+                case 7:
+                    return R.drawable.day_foggy;
+                case 8:
+                    return R.drawable.day_cloudly;
+
+                default:
+                    return R.drawable.day_synny;
+            }
+        }
+    }
+
+
+
 }

@@ -1,6 +1,12 @@
 package com.example.v4n0v.wethariumreact.image;
 
+import android.graphics.Bitmap;
+import android.os.Environment;
+
+import com.example.v4n0v.wethariumreact.App;
+
 import java.io.File;
+import java.io.FileOutputStream;
 
 import io.paperdb.Paper;
 import timber.log.Timber;
@@ -11,10 +17,26 @@ import timber.log.Timber;
 
 public class PaperImageCache implements ICacheImage {
     @Override
-    public void writeToCache(File file, String city) {
+    public void writeToCache(Bitmap bitmap, String city) {
+        final File imageFile = new File(App.getInstance().getExternalFilesDir(Environment.DIRECTORY_PICTURES), city+".jpg");
+        FileOutputStream fos;
+
+        try
+        {
+            fos = new FileOutputStream(imageFile);
+            bitmap.compress(  Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+        }
+        catch (Exception e)
+        {
+            Timber.d("Failed to save image");
+
+        }
+
+
         Paper.book("images").delete(city);
-        Paper.book("images").write(city, file);
-        Timber.d("paper saved image: "+file);
+        Paper.book("images").write(city, imageFile);
+        Timber.d("paper saved image: "+imageFile);
     }
 
     @Override

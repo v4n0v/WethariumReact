@@ -28,11 +28,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-
+/**
+ * класс загузчик списка ссылок на фото из Flicker, поиск по городу
+ */
 public class GlideLoader implements IImageLoader<ImageView> {
-    /**
-     * класс загузчик списка ссылок на фото из Flicker, поиск по городу
-     */
+
     @Inject
     ICacheImage cacheImage;
     @Inject
@@ -43,17 +43,16 @@ public class GlideLoader implements IImageLoader<ImageView> {
         this.linkLoader = linkLoader;
     }
 
-    private String link;
+
 
     @Override
     public void loadInto(String city, ImageView container) {
-        File file = cacheImage.readFromCache(city);
+        File file = cacheImage.readFromCache(city.toLowerCase());
         if (file != null) {
-            Timber.d("loading avatar from phone memory\n" + file.getAbsolutePath());
+            Timber.d("loading city image from phone memory\n" + file.getAbsolutePath());
             Glide.with(container.getContext())
                     .load(file)
                     .into(container);
-            Timber.d("avatar loaded from phone memory ");
         } else {
             downloadPhoto(city, container);
         }
@@ -68,8 +67,6 @@ public class GlideLoader implements IImageLoader<ImageView> {
                     .subscribeOn(Schedulers.io())
                     .subscribe(link -> {
                         Timber.d("I've got " + link + " link");
-                        this.link = link;
-
 
                         GlideApp.with(container.getContext()).asBitmap().load(link).listener(new RequestListener<Bitmap>() {
                             @Override
@@ -82,34 +79,26 @@ public class GlideLoader implements IImageLoader<ImageView> {
                             public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
                                 //
                                 Timber.d("saving city image into phone memory " + link);
-                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                resource.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                                File file = new File(container.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), city + ".jpg");
-                                try {
-                                    stream.writeTo(new FileOutputStream(file));
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                cacheImage.writeToCache(file, city);
+//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                resource.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
+//                                File file = new File(container.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), city.toLowerCase() + ".jpg");
+//                                if (file.exists()){
+//                                    file.delete();
+//                                }
+//                                try {
+//                                    stream.writeTo(new FileOutputStream(file));
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
+                                cacheImage.writeToCache(resource, city.toLowerCase());
                                 Timber.d(city+ " city image saved in phone memory, path added to realm database");
                                 return false;
                             }
                         }).into(container);
                     });
-//
-        }
-    }
 
-    public static String MD5(String s) {
-        MessageDigest m = null;
-        try {
-            m = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         }
-
-        m.update(s.getBytes(), 0, s.length());
-        return new BigInteger(1, m.digest()).toString(16);
     }
 
 

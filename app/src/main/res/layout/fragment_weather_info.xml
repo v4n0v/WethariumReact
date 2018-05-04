@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:foo="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:foo="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorGrayBG"
     android:orientation="vertical"
     android:padding="@dimen/big_margin">
@@ -29,7 +29,6 @@
                 tools:src="@drawable/day_rainy" />
 
             <com.example.v4n0v.wethariumreact.custom.TextViewPlus
-                foo:customFont="roboto.ttf"
                 android:id="@+id/info_temperature_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,6 +37,7 @@
                 android:layout_weight="3"
                 android:textColor="@color/colorDarkGray"
                 android:textSize="@dimen/info_temp_font"
+                foo:customFont="roboto.ttf"
                 tools:text="+21o" />
 
         </LinearLayout>
@@ -58,7 +58,6 @@
 
 
                 <com.example.v4n0v.wethariumreact.custom.TextViewPlus
-                    foo:customFont="roboto.ttf"
                     android:id="@+id/info_description_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -66,21 +65,22 @@
                     android:textColor="@color/colorDarkGray"
                     android:textSize="@dimen/last_addition_font_size"
                     android:textStyle="bold"
+                    foo:customFont="roboto.ttf"
                     tools:text="Drizzle" />
             </LinearLayout>
 
             <com.example.v4n0v.wethariumreact.custom.TextViewPlus
-                foo:customFont="roboto.ttf"
                 android:id="@+id/info_min_max"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/mid_margin"
                 android:layout_weight="3"
-
                 android:text="+1 +3"
+
                 android:textColor="@color/colorDarkGray"
-                android:textSize="@dimen/info_max_min_font_size" />
+                android:textSize="@dimen/info_max_min_font_size"
+                foo:customFont="roboto.ttf" />
         </LinearLayout>
     </LinearLayout>
 
@@ -104,7 +104,6 @@
             android:orientation="horizontal">
 
             <com.example.v4n0v.wethariumreact.custom.TextViewPlus
-                foo:customFont="roboto-bold.ttf"
                 android:id="@+id/info_pressure_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -113,18 +112,36 @@
                 android:text="@string/info_pressure"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/last_addition_font_size"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                foo:customFont="roboto-bold.ttf" />
 
-            <com.example.v4n0v.wethariumreact.custom.TextViewPlus
-                foo:customFont="roboto.ttf"
-                android:id="@+id/info_pressure"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textAlignment="viewStart"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/last_addition_font_size"
-                tools:text="1000mPhg" />
+                android:orientation="horizontal">
+
+                <com.example.v4n0v.wethariumreact.custom.TextViewPlus
+                    android:id="@+id/info_pressure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/last_addition_font_size"
+                    foo:customFont="roboto.ttf"
+                    tools:text="1000" />
+
+                <com.example.v4n0v.wethariumreact.custom.TextViewPlus
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pressure_dim"
+
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/last_addition_font_size"
+                    foo:customFont="roboto.ttf" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -135,7 +152,6 @@
             android:orientation="horizontal">
 
             <com.example.v4n0v.wethariumreact.custom.TextViewPlus
-                foo:customFont="roboto-bold.ttf"
                 android:id="@+id/info_wind_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,19 +160,35 @@
                 android:text="@string/info_wind"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/last_addition_font_size"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                foo:customFont="roboto-bold.ttf" />
 
 
-            <com.example.v4n0v.wethariumreact.custom.TextViewPlus
-                foo:customFont="roboto.ttf"
-                android:id="@+id/info_wind"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_weight="1"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/last_addition_font_size"
-                tools:text="70%" />
+                android:orientation="horizontal">
+
+                <com.example.v4n0v.wethariumreact.custom.TextViewPlus
+                    android:id="@+id/info_wind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+
+                    android:textSize="@dimen/last_addition_font_size"
+                    foo:customFont="roboto.ttf"
+                    tools:text="70" />
+
+                <com.example.v4n0v.wethariumreact.custom.TextViewPlus
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wind_dim"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/last_addition_font_size"
+                    foo:customFont="roboto.ttf" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -166,7 +198,6 @@
             android:orientation="horizontal">
 
             <com.example.v4n0v.wethariumreact.custom.TextViewPlus
-                foo:customFont="roboto-bold.ttf"
                 android:id="@+id/info_humidity_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -176,18 +207,33 @@
                 android:text="@string/info_humidity"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/last_addition_font_size"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                foo:customFont="roboto-bold.ttf" />
 
-            <com.example.v4n0v.wethariumreact.custom.TextViewPlus
-                foo:customFont="roboto.ttf"
-                android:id="@+id/info_humidity"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:orientation="horizontal">
 
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/last_addition_font_size"
-                tools:text="7ms" />
+                <com.example.v4n0v.wethariumreact.custom.TextViewPlus
+                    android:id="@+id/info_humidity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/last_addition_font_size"
+                    foo:customFont="roboto.ttf"
+                    tools:text="7ms" />
+
+                <com.example.v4n0v.wethariumreact.custom.TextViewPlus
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/humidity_dim"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/last_addition_font_size"
+                    foo:customFont="roboto.ttf" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -275,12 +321,12 @@
 
 
         <com.example.v4n0v.wethariumreact.custom.TextViewPlus
-            foo:customFont="roboto.ttf"
             android:id="@+id/tv_last_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/lil_margin"
+            foo:customFont="roboto.ttf"
             tools:text="last upd" />
 
         <ImageView

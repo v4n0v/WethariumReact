@@ -78,19 +78,19 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
     @Override
     public void applyData(Weather weather) {
         Timber.d("weather applied: " + weather.getCity() + ", " + weather.getTemperature());
-        pressureTextView.setText(String.valueOf(weather.getPressure()+getString(R.string.pressure_dim)));
-        windTextView.setText(String.valueOf(weather.getWind()+getString(R.string.wind_dim)));
-        humidityTextView.setText(String.valueOf(weather.getHumidity()+getString(R.string.humidity_dim)));
+        pressureTextView.setText(String.valueOf(weather.getPressure()));
+        windTextView.setText(String.valueOf(weather.getWind()));
+        humidityTextView.setText(String.valueOf(weather.getHumidity()));
     }
 
     @Override
-    public void  showDescription(String description){
-        descriptionTextView.setText(description);
+    public void  showDescription(int description){
+        descriptionTextView.setText(getWeatherDescription(description));
     }
 
     @Override
     public void showIcon(int weatherIcon) {
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), weatherIcon, null);
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), getWeatherIcon(weatherIcon), null);
         weatherImage.setImageDrawable(drawable);
     }
 
@@ -109,5 +109,35 @@ public class WeatherFragment extends MvpAppCompatFragment implements WeatherView
         tempMinMaxTextView.setText(temperatureBetween);
     }
 
+    public  int getWeatherIcon(int id) {
+        if (id == 800) return R.drawable.day_synny;
+        else {
+            id = id / 100;
+
+            switch (id) {
+                case 2:
+                    return R.drawable.day_thunder;
+                case 3:
+                    return R.drawable.day_drizzle;
+                case 5:
+                    return R.drawable.day_rainy;
+                case 6:
+                    return R.drawable.day_snowie;
+                case 7:
+                    return R.drawable.day_foggy;
+                case 8:
+                    return R.drawable.day_cloudly;
+
+                default:
+                    return R.drawable.day_synny;
+            }
+        }
+
+    }
+
+    public  String getWeatherDescription(int id){
+        String[] desc = getContext().getResources().getStringArray(R.array.description_wether);
+        return desc[id/100];
+    }
 
 }

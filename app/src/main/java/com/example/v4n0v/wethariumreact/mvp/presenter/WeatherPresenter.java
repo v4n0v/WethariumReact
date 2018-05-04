@@ -10,6 +10,9 @@ import com.example.v4n0v.wethariumreact.common.WeatherDecorator;
 import com.example.v4n0v.wethariumreact.mvp.views.WeatherView;
 import com.squareup.otto.Subscribe;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import io.paperdb.Paper;
 import io.reactivex.Scheduler;
 
@@ -33,10 +36,11 @@ public class WeatherPresenter extends MvpPresenter<WeatherView> {
 
    private void  applyData(Weather weather){
        getViewState().applyData(weather);
-       getViewState().showIcon(model.getWeatherIcon(weather.getId()));
-       getViewState().showDescription(model.getWeatherDescription(weather.getId()));
+       getViewState().showIcon(weather.getId());
+       getViewState().showDescription(weather.getId());
        getViewState().showTemperature(model.temperatureFormat(weather.getTemperature()));
-       getViewState().showLastUpdate(model.getLastUpdate(weather.getTime()));
+       SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MMM: HH:mm", Locale.getDefault());
+       getViewState().showLastUpdate(dateFormat.format(weather.getTime()));
        getViewState().showTemperatureBetween(model.getTemperatureBetween(weather.getTempMin(), weather.getTempMax()));
     }
 
